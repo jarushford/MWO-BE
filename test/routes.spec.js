@@ -68,4 +68,41 @@ describe('API', () => {
         })
     })
   })
+
+  describe('/api/v1/photos', () => {
+    it('GET all photos', done => {
+      chai.request(server)
+        .get('/api/v1/photos')
+        .end((err, response) => {
+          response.should.have.status(200)
+          response.should.be.json
+          response.body.should.be.a('array')
+          response.body.should.have.length(1)
+          response.body[0].should.have.property('link')
+          response.body[0].link.should.be.a('string')
+          response.body[0].should.have.property('description')
+          response.body[0].description.should.be.a('string')
+          done()
+        })
+    })
+  })
+
+  describe('/api/v1/videos', () => {
+    it('GET all videos', done => {
+      chai.request(server)
+        .get('/api/v1/videos')
+        .end((err, response) => {
+          response.should.have.status(200)
+          response.should.be.json
+          response.body.should.be.a('array')
+          response.body.should.have.length(1)
+          response.body[0].should.have.property('title')
+          response.body[0].title.should.be.a('string')
+          response.body[0].should.have.property('link')
+          response.body[0].link.should.be.a('string')
+          done()
+        })
+    })
+  })
+
 })

@@ -32,6 +32,26 @@ app.get('/api/v1/news', (request, response) => {
     })
 })
 
+app.get('/api/v1/photos', (request, response) => {
+  database('photos').select()
+    .then(photos => {
+      response.status(200).json(photos)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
+app.get('/api/v1/videos', (request, response) => {
+  database('videos').select()
+    .then(videos => {
+      response.status(200).json(videos)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
 app.use((request, response) => {
   response.status(404).send('Page Not Found.')
 })
