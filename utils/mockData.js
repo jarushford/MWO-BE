@@ -1,7 +1,7 @@
 const users = [
   {
     email: 'madwallaceband@gmail.com',
-    password: 'Davidshaiku'
+    password: '94d7d6e119293a25462d2e84414715de7bddb051cddc033318e00598540a8cff'
   }
 ]
 

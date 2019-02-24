@@ -21,6 +21,10 @@ describe('API', () => {
       })
   })
 
+  describe('/api/v1/login', () => {
+    
+  })
+
   describe('/api/v1/tour_dates', () => {
     it('GET all tour_dates', done => {
       chai.request(server)
