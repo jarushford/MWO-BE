@@ -5,7 +5,10 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const { validateTourDateParams } = require('./utils/middleware')
+const { 
+  validateTourDateParams,
+  validateNewsParams
+} = require('./utils/middleware')
 
 
 app.set('port', process.env.PORT || 3000)
@@ -66,6 +69,23 @@ app.get('/api/v1/news', (request, response) => {
   database('news').select()
     .then(items => {
       response.status(200).json(items)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
+app.post('/api/v1/news', validateNewsParams, (request, response) => {
+  const newItem = {
+    title: request.body.title,
+    body: request.body.body,
+    link: request.body.link,
+    image_url: request.body.image_url
+  }
+
+  database('news').insert(newItem, 'id')
+    .then(newsID => {
+      response.status(201).json({ id: newsID[0] })
     })
     .catch(error => {
       response.status(500).json({ error })

@@ -156,6 +156,42 @@ describe('API', () => {
           done()
         })
     })
+
+    it('POST a news item successfully', done => {
+      chai.request(server)
+        .post('/api/v1/news')
+        .send({
+          "title": "New things!",
+          "body": "Come check out the new things!",
+          "link": "https://www.newstuff.com",
+          "image_url": "https://www.newstuff.jpg"
+        })
+        .end((err, response) => {
+          response.should.have.status(201)
+          response.should.be.json
+          response.body.should.have.property('id')
+          response.body.id.should.be.a('number')
+          done()
+        })
+    })
+
+    it('POST a news item incorrectly', done => {
+      chai.request(server)
+        .post('/api/v1/news')
+        .send({
+          "title": "New things!",
+          "body": "Come check out the new things!",
+          "link": "https://www.newstuff.com"
+        })
+        .end((err, response) => {
+          response.should.have.status(422)
+          response.should.be.json
+          response.body.should.have.property('message')
+          response.body.message.should.be.a('string')
+          response.body.message.should.equal('Expected format: { title: <String>, body: <String>, link: <String>, image_url: <String> }. You are missing a image_url.')
+          done()
+        })
+    })
   })
 
   describe('/api/v1/photos', () => {

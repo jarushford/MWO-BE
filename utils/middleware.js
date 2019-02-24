@@ -18,6 +18,25 @@ const validateTourDateParams = (req, res, next) => {
   next()
 }
 
+const validateNewsParams = (req, res, next) => {
+  const newItem = {
+    title: req.body.title,
+    body: req.body.body,
+    link: req.body.link,
+    image_url: req.body.image_url
+  }
+
+  for (let requiredParam of ['title', 'body', 'link', 'image_url']) {
+    if (!newItem[requiredParam]) {
+      return res.status(422)
+        .json({ message: `Expected format: { title: <String>, body: <String>, link: <String>, image_url: <String> }. You are missing a ${requiredParam}.` })
+    }
+  }
+
+  next()
+}
+
 module.exports = {
-  validateTourDateParams
+  validateTourDateParams,
+  validateNewsParams
 }
