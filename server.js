@@ -8,7 +8,8 @@ const cors = require('cors')
 const { 
   validateTourDateParams,
   validateNewsParams,
-  validatePhotoParams
+  validatePhotoParams,
+  validateVideoParams
 } = require('./utils/middleware')
 
 
@@ -122,6 +123,21 @@ app.get('/api/v1/videos', (request, response) => {
   database('videos').select()
     .then(videos => {
       response.status(200).json(videos)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
+app.post('/api/v1/videos', validateVideoParams, (request, response) => {
+  const newVideo = {
+    title: request.body.title,
+    link: request.body.link
+  }
+
+  database('videos').insert(newVideo, 'id')
+    .then(videoID => {
+      response.status(201).json({ id: videoID[0] })
     })
     .catch(error => {
       response.status(500).json({ error })

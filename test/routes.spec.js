@@ -260,6 +260,37 @@ describe('API', () => {
           done()
         })
     })
-  })
 
+    it('POST a video successfully', done => {
+      chai.request(server)
+        .post('/api/v1/videos')
+        .send({
+          "title": "Little Wing @ Hermans",
+          "link": "https://www.youtube.com/watch?v=dAPQgkgLNRw"
+        })
+        .end((err, response) => {
+          response.should.have.status(201)
+          response.should.be.json
+          response.body.should.have.property('id')
+          response.body.id.should.be.a('number')
+          done()
+        })
+    })
+
+    it('POST a video incorrectly', done => {
+      chai.request(server)
+        .post('/api/v1/videos')
+        .send({
+          "title": "nice video"
+        })
+        .end((err, response) => {
+          response.should.have.status(422)
+          response.should.be.json
+          response.body.should.have.property('message')
+          response.body.message.should.be.a('string')
+          response.body.message.should.equal('Expected format: { link: <String>, title: <String> }. You are missing a link.')
+          done()
+        })
+    })
+  })
 })

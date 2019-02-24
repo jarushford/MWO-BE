@@ -52,8 +52,25 @@ const validatePhotoParams = (req, res, next) => {
   next()
 }
 
+const validateVideoParams = (req, res, next) => {
+  const newVideo = {
+    link: req.body.link,
+    title: req.body.title
+  }
+
+  for (let requiredParam of ['link', 'title']) {
+    if (!newVideo[requiredParam]) {
+      return res.status(422)
+        .json({ message: `Expected format: { link: <String>, title: <String> }. You are missing a ${requiredParam}.` })
+    }
+  }
+
+  next()
+}
+
 module.exports = {
   validateTourDateParams,
   validateNewsParams,
-  validatePhotoParams
+  validatePhotoParams,
+  validateVideoParams
 }
