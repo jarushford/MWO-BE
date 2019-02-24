@@ -10,22 +10,19 @@ const knex = require('knex')(config)
 chai.use(chaiHttp)
 
 describe('API', () => {
-  before(done => {
+  
+  beforeEach(done => {
     knex.migrate.latest()
       .then(() => {
-        done()
-      })
-  })
-
-  beforeEach(done => {
-    knex.seed.run()
-      .then(() => {
-        done()
+        knex.seed.run()
+          .then(() => {
+            done()
+          })
       })
   })
 
   describe('/api/v1/tour_dates', () => {
-    it.skip('GET all tour_dates', done => {
+    it('GET all tour_dates', done => {
       chai.request(server)
         .get('/api/v1/tour_dates')
         .end((err, response) => {
@@ -45,6 +42,28 @@ describe('API', () => {
           response.body[0].ticket_link.should.be.a('string')
           response.body[0].should.have.property('venue_link')
           response.body[0].venue_link.should.be.a('string')
+          done()
+        })
+    })
+  })
+
+  describe('/api/v1/news', () => {
+    it('GET all news items', done => {
+      chai.request(server)
+        .get('/api/v1/news')
+        .end((err, response) => {
+          response.should.have.status(200)
+          response.should.be.json
+          response.body.should.be.a('array')
+          response.body.should.have.length(1)
+          response.body[0].should.have.property('title')
+          response.body[0].title.should.be.a('string')
+          response.body[0].should.have.property('body')
+          response.body[0].body.should.be.a('string')
+          response.body[0].should.have.property('link')
+          response.body[0].link.should.be.a('string')
+          response.body[0].should.have.property('image_url')
+          response.body[0].image_url.should.be.a('string')
           done()
         })
     })
