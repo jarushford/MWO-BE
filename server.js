@@ -7,7 +7,8 @@ const app = express()
 const cors = require('cors')
 const { 
   validateTourDateParams,
-  validateNewsParams
+  validateNewsParams,
+  validatePhotoParams
 } = require('./utils/middleware')
 
 
@@ -96,6 +97,21 @@ app.get('/api/v1/photos', (request, response) => {
   database('photos').select()
     .then(photos => {
       response.status(200).json(photos)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
+app.post('/api/v1/photos', validatePhotoParams, (request, response) => {
+  const newPhoto = {
+    description: request.body.description,
+    link: request.body.link
+  }
+
+  database('photos').insert(newPhoto, 'id')
+    .then(photoID => {
+      response.status(201).json({ id: photoID[0] })
     })
     .catch(error => {
       response.status(500).json({ error })

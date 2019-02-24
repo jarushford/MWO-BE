@@ -210,6 +210,38 @@ describe('API', () => {
           done()
         })
     })
+
+    it('POST a photo successfully', done => {
+      chai.request(server)
+        .post('/api/v1/photos')
+        .send({
+          "description": "nice photo",
+          "link": "https://www.newstuff.com/image.jpg"
+        })
+        .end((err, response) => {
+          response.should.have.status(201)
+          response.should.be.json
+          response.body.should.have.property('id')
+          response.body.id.should.be.a('number')
+          done()
+        })
+    })
+
+    it('POST a photo incorrectly', done => {
+      chai.request(server)
+        .post('/api/v1/photos')
+        .send({
+          "description": "nice photo"
+        })
+        .end((err, response) => {
+          response.should.have.status(422)
+          response.should.be.json
+          response.body.should.have.property('message')
+          response.body.message.should.be.a('string')
+          response.body.message.should.equal('Expected format: { link: <String>, description: <String> }. You are missing a link.')
+          done()
+        })
+    })
   })
 
   describe('/api/v1/videos', () => {
