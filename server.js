@@ -12,6 +12,25 @@ app.locals.title = 'MWO'
 app.use(cors())
 app.use(bodyParser.json())
 
+app.post('/api/v1/login', (request, response) => {
+  const user = request.body.email
+  const password = request.body.password
+
+  database('users').where('email', user).select()
+    .then(user => {
+      if (!user.length) {
+        response.status(401).json({ authorized: false })
+      } else if (user[0].password === password) {
+        response.status(200).json({ authorized: true })
+      } else {
+        response.status(401).json({ authorized: false })
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
 app.get('/api/v1/tour_dates', (request, response) => {
   database('tour_dates').select()
     .then(dates => {

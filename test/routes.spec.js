@@ -22,7 +22,56 @@ describe('API', () => {
   })
 
   describe('/api/v1/login', () => {
-    
+    it('POST correct login info', done => {
+      chai.request(server)
+        .post('/api/v1/login')
+        .send({
+          "email": "madwallaceband@gmail.com",
+          "password": "94d7d6e119293a25462d2e84414715de7bddb051cddc033318e00598540a8cff"
+        })
+        .end((err, response) => {
+          response.should.have.status(200)
+          response.should.be.json
+          response.body.should.have.property('authorized')
+          response.body.authorized.should.be.a('boolean')
+          response.body.authorized.should.equal(true)
+          done()
+        })
+    })
+
+    it('POST incorrect login info', done => {
+      chai.request(server)
+        .post('/api/v1/login')
+        .send({
+          "email": "madwallaceband@gmail.com",
+          "password": "94d7d6e119293a62d2e847bddb051cddc033318e00598540a8cff"
+        })
+        .end((err, response) => {
+          response.should.have.status(401)
+          response.should.be.json
+          response.body.should.have.property('authorized')
+          response.body.authorized.should.be.a('boolean')
+          response.body.authorized.should.equal(false)
+          done()
+        })
+    })
+
+    it('POST login info for a user that does not exist', done => {
+      chai.request(server)
+        .post('/api/v1/login')
+        .send({
+          "email": "john@gmail.com",
+          "password": "94d7d6e119293a62d2e847bddb051cddc033318e00598540a8cff"
+        })
+        .end((err, response) => {
+          response.should.have.status(401)
+          response.should.be.json
+          response.body.should.have.property('authorized')
+          response.body.authorized.should.be.a('boolean')
+          response.body.authorized.should.equal(false)
+          done()
+        })
+    })
   })
 
   describe('/api/v1/tour_dates', () => {
