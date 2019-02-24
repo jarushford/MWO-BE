@@ -13,12 +13,8 @@ describe('API', () => {
   
   beforeEach(done => {
     knex.migrate.latest()
-      .then(() => {
-        knex.seed.run()
-          .then(() => {
-            done()
-          })
-      })
+      .then(() => knex.seed.run())
+      .then(() => done())
   })
 
   describe('/api/v1/login', () => {
@@ -95,6 +91,46 @@ describe('API', () => {
           response.body[0].ticket_link.should.be.a('string')
           response.body[0].should.have.property('venue_link')
           response.body[0].venue_link.should.be.a('string')
+          done()
+        })
+    })
+
+    it('POST new tour date successfully', done => {
+      chai.request(server)
+        .post('/api/v1/tour_dates')
+        .send({
+          "day_of_week": "Friday",
+          "date": "06/13",
+          "city": "Denver, CO",
+          "venue": "Red Rocks",
+          "ticket_link": "https://www.redrocks.com/",
+          "venue_link": "https://www.redrocks.com/"
+        })
+        .end((err, response) => {
+          response.should.have.status(201)
+          response.should.be.json
+          response.body.should.have.property('id')
+          response.body.id.should.be.a('number')
+          done()
+        })
+    })
+
+    it('POST new tour date incorrectly', done => {
+      chai.request(server)
+        .post('/api/v1/tour_dates')
+        .send({
+          "day_of_week": "Friday",
+          "date": "06/13",
+          "city": "Denver, CO",
+          "ticket_link": "https://www.redrocks.com/",
+          "venue_link": "https://www.redrocks.com/"
+        })
+        .end((err, response) => {
+          response.should.have.status(422)
+          response.should.be.json
+          response.body.should.have.property('message')
+          response.body.message.should.be.a('string')
+          response.body.message.should.equal('Expected format: { day_of_week: <String>, date: <String>, city: <String>, venue: <String>, ticket_link: <String>, venue_link: <String> }. You are missing a venue.')
           done()
         })
     })
