@@ -1,9 +1,15 @@
 language: node_js
 node_js:
-  - "node"
+- node
 services:
-  - postgresql
+- postgresql
 before_script:
-  - psql -c 'CREATE DATABASE travis_test;' -U postgres
+- psql -c 'CREATE DATABASE mwotest;' -U postgres
 notifications:
   email: false
+deploy:
+  provider: heroku
+  api_key:
+    secure: NdGf5b1PlaZBei6HpKNJRfE644O72A0jucuVbe/bHHnufOEAFk/BLrpZ8xHPhAXkyT4aVEcK5T0e9bWIAPFXizrGsCTi+CTKOOLPTQpPDHR8iWqfyGB7nCrF8BmfIkH6FYT03w3nysnRBIOBcGCxeaHeTqdvLHa6Ee6iYdGIl7w9IHeRmBnsRJkAcn1oxqDtyv2XZnSx8ErBwKO9k1NahQLhUVDjK3VpUE1w8rJpW4mn1PAbDJvYnLfZQlCsKuEqoJYh8D74hityuFJKb7AO+Bo3nOgq7A2fjfujTWpswb9sXTXJ09x+8Z5dYmoqZvTwtXslahGFkeRctJIILuUnaS5J5h1x195lCLbZEx+yBhSf8xOo49oZofJiqIsppa+uXEfGBx1vzuRwUvm7b5L6ji/orK+SPhkbC6fIKX1IgaqUy4gglZ6hbx27bm5zWhm4szCuwpRAo5rtqEzP5xYW2KH8AnNsGogFBTOniOOk/nbmJSu7uMp+tmL/UOrPIAUG+L1x9oAJ7XygmvIyDNJ8QaCJAGemci1MRAvUyvTvFkbm7bNAnrHJhj+XjfBzl+wwN8LViA+p97gm3A2JKhFRYq6NmlWrnjdffP8hfzMB9xGHVTpryJz5yN2Xl7xINEMVnaNatn4kvarAtAZK1uEm7l09U4ZMu9RXFFfspNUERy8=
+  app: mwo-be
+  skip_cleanup: true
