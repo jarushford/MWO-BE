@@ -12,7 +12,8 @@ chai.use(chaiHttp)
 describe('API', () => {
   
   beforeEach(done => {
-    knex.migrate.latest()
+    knex.migrate.rollback()
+      .then(() => knex.migrate.latest())
       .then(() => knex.seed.run())
       .then(() => done())
   })
@@ -134,6 +135,32 @@ describe('API', () => {
           done()
         })
     })
+
+    it('DELETE tour date successfully', done => {
+      chai.request(server)
+        .get('/api/v1/tour_dates')
+        .end((err, response) => {
+          const id = response.body[0].id
+          chai.request(server)
+            .delete(`/api/v1/tour_dates/${id}`)
+            .end((err, response) => {
+              response.should.have.status(200)
+              done()
+            })
+          done()
+        })
+    })
+
+    it('DELETE tour date unsuccessfully', done => {
+      chai.request(server)
+        .delete(`/api/v1/tour_dates/-1`)
+        .end((err, response) => {
+          response.should.have.status(404)
+          response.should.be.json
+          response.body.message.should.equal('Could not find that date.')
+          done()
+        })
+    })
   })
 
   describe('/api/v1/news', () => {
@@ -192,6 +219,32 @@ describe('API', () => {
           done()
         })
     })
+
+    it('DELETE news item successfully', done => {
+      chai.request(server)
+        .get('/api/v1/news')
+        .end((err, response) => {
+          const id = response.body[0].id
+          chai.request(server)
+            .delete(`/api/v1/news/${id}`)
+            .end((err, response) => {
+              response.should.have.status(200)
+              done()
+            })
+          done()
+        })
+    })
+
+    it('DELETE news item unsuccessfully', done => {
+      chai.request(server)
+        .delete(`/api/v1/news/-1`)
+        .end((err, response) => {
+          response.should.have.status(404)
+          response.should.be.json
+          response.body.message.should.equal('Could not find that item.')
+          done()
+        })
+    })
   })
 
   describe('/api/v1/photos', () => {
@@ -242,6 +295,32 @@ describe('API', () => {
           done()
         })
     })
+
+    it('DELETE photo successfully', done => {
+      chai.request(server)
+        .get('/api/v1/photos')
+        .end((err, response) => {
+          const id = response.body[0].id
+          chai.request(server)
+            .delete(`/api/v1/photos/${id}`)
+            .end((err, response) => {
+              response.should.have.status(200)
+              done()
+            })
+          done()
+        })
+    })
+
+    it('DELETE photo unsuccessfully', done => {
+      chai.request(server)
+        .delete(`/api/v1/photos/-1`)
+        .end((err, response) => {
+          response.should.have.status(404)
+          response.should.be.json
+          response.body.message.should.equal('Could not find that photo.')
+          done()
+        })
+    })
   })
 
   describe('/api/v1/videos', () => {
@@ -289,6 +368,32 @@ describe('API', () => {
           response.body.should.have.property('message')
           response.body.message.should.be.a('string')
           response.body.message.should.equal('Expected format: { link: <String>, title: <String> }. You are missing a link.')
+          done()
+        })
+    })
+
+    it('DELETE video successfully', done => {
+      chai.request(server)
+        .get('/api/v1/videos')
+        .end((err, response) => {
+          const id = response.body[0].id
+          chai.request(server)
+            .delete(`/api/v1/videos/${id}`)
+            .end((err, response) => {
+              response.should.have.status(200)
+              done()
+            })
+          done()
+        })
+    })
+
+    it('DELETE video unsuccessfully', done => {
+      chai.request(server)
+        .delete(`/api/v1/videos/-1`)
+        .end((err, response) => {
+          response.should.have.status(404)
+          response.should.be.json
+          response.body.message.should.equal('Could not find that video.')
           done()
         })
     })

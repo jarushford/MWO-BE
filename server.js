@@ -67,6 +67,21 @@ app.post('/api/v1/tour_dates', validateTourDateParams, (request, response) => {
     })
 })
 
+app.delete('/api/v1/tour_dates/:id', (request, response) => {
+  const id = request.params.id
+  database('tour_dates').where('id', id).del()
+    .then(dateID => {
+      if (dateID) {
+        response.status(200)
+      } else {
+        response.status(404).json({ message: 'Could not find that date.' })
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
 app.get('/api/v1/news', (request, response) => {
   database('news').select()
     .then(items => {
@@ -88,6 +103,21 @@ app.post('/api/v1/news', validateNewsParams, (request, response) => {
   database('news').insert(newItem, 'id')
     .then(newsID => {
       response.status(201).json({ id: newsID[0] })
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
+app.delete('/api/v1/news/:id', (request, response) => {
+  const id = request.params.id
+  database('news').where('id', id).del()
+    .then(itemID => {
+      if (itemID) {
+        response.status(200)
+      } else {
+        response.status(404).json({ message: 'Could not find that item.' })
+      }
     })
     .catch(error => {
       response.status(500).json({ error })
@@ -119,6 +149,21 @@ app.post('/api/v1/photos', validatePhotoParams, (request, response) => {
     })
 })
 
+app.delete('/api/v1/photos/:id', (request, response) => {
+  const id = request.params.id
+  database('photos').where('id', id).del()
+    .then(photoID => {
+      if (photoID) {
+        response.status(200)
+      } else {
+        response.status(404).json({ message: 'Could not find that photo.' })
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
 app.get('/api/v1/videos', (request, response) => {
   database('videos').select()
     .then(videos => {
@@ -138,6 +183,21 @@ app.post('/api/v1/videos', validateVideoParams, (request, response) => {
   database('videos').insert(newVideo, 'id')
     .then(videoID => {
       response.status(201).json({ id: videoID[0] })
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
+app.delete('/api/v1/videos/:id', (request, response) => {
+  const id = request.params.id
+  database('videos').where('id', id).del()
+    .then(videoID => {
+      if (videoID) {
+        response.status(200)
+      } else {
+        response.status(404).json({ message: 'Could not find that video.' })
+      }
     })
     .catch(error => {
       response.status(500).json({ error })
