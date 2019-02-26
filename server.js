@@ -71,7 +71,7 @@ app.delete('/api/v1/tour_dates/:id', (request, response) => {
   const id = request.params.id
   database('tour_dates').where('id', id).del()
     .then(dateID => {
-      if (dateID) {
+      if (dateID > 0) {
         response.status(200)
       } else {
         response.status(404).json({ message: 'Could not find that date.' })
