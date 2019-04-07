@@ -68,9 +68,25 @@ const validateVideoParams = (req, res, next) => {
   next()
 }
 
+const validateContactParams = (req, res, next) => {
+  const newContact = {
+    email: req.body.email,
+  }
+
+  for (let requiredParam of ['email']) {
+    if (!newContact[requiredParam]) {
+      return res.status(422)
+        .json({ message: `Expected format: { email: <String> }. You are missing a ${requiredParam}.` })
+    }
+  }
+
+  next()
+}
+
 module.exports = {
   validateTourDateParams,
   validateNewsParams,
   validatePhotoParams,
-  validateVideoParams
+  validateVideoParams,
+  validateContactParams
 }

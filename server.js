@@ -9,7 +9,8 @@ const {
   validateTourDateParams,
   validateNewsParams,
   validatePhotoParams,
-  validateVideoParams
+  validateVideoParams,
+  validateContactParams
 } = require('./utils/middleware')
 
 
@@ -198,6 +199,30 @@ app.delete('/api/v1/videos/:id', (request, response) => {
       } else {
         response.status(404).json({ message: 'Could not find that video.' })
       }
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
+app.get('/api/v1/mailing', (request, response) => {
+  database('mailing').select()
+    .then(contacts => {
+      response.status(200).json(contacts)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
+app.post('/api/v1/mailing', validateContactParams, (request, response) => {
+  const newContact = {
+    email: request.body.email,
+  }
+
+  database('mailing').insert(newContact, 'id')
+    .then(contactID => {
+      response.status(201).json({ id: contactID[0] })
     })
     .catch(error => {
       response.status(500).json({ error })

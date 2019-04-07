@@ -5,6 +5,10 @@ const users = [
   }
 ]
 
+const contacts = [
+  { email: 'test@test.com' }
+]
+
 const tour_dates = [
   {
     day_of_week: 'Wednesday',
@@ -52,5 +56,6 @@ module.exports = {
   tour_dates,
   news,
   photos,
-  videos
+  videos,
+  contacts
 }

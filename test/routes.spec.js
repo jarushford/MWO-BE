@@ -398,4 +398,51 @@ describe('API', () => {
         })
     })
   })
+
+  describe('/api/v1/mailing', () => {
+    it('GET all contacts', done => {
+      chai.request(server)
+        .get('/api/v1/mailing')
+        .end((err, response) => {
+          response.should.have.status(200)
+          response.should.be.json
+          response.body.should.be.a('array')
+          response.body.should.have.length(1)
+          response.body[0].should.have.property('email')
+          response.body[0].email.should.be.a('string')
+          done()
+        })
+    })
+
+    it('POST a contact successfully', done => {
+      chai.request(server)
+        .post('/api/v1/mailing')
+        .send({
+          "email": "test@email.com",
+        })
+        .end((err, response) => {
+          response.should.have.status(201)
+          response.should.be.json
+          response.body.should.have.property('id')
+          response.body.id.should.be.a('number')
+          done()
+        })
+    })
+
+    it('POST a contact incorrectly', done => {
+      chai.request(server)
+        .post('/api/v1/mailing')
+        .send({
+          "name": "email@email.com"
+        })
+        .end((err, response) => {
+          response.should.have.status(422)
+          response.should.be.json
+          response.body.should.have.property('message')
+          response.body.message.should.be.a('string')
+          response.body.message.should.equal('Expected format: { email: <String> }. You are missing a email.')
+          done()
+        })
+    })
+  })
 })
