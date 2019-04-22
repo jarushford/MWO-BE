@@ -55,13 +55,14 @@ const validatePhotoParams = (req, res, next) => {
 const validateVideoParams = (req, res, next) => {
   const newVideo = {
     link: req.body.link,
-    title: req.body.title
+    title: req.body.title,
+    thumbnail: req.body.thumbnail
   }
 
-  for (let requiredParam of ['link', 'title']) {
+  for (let requiredParam of ['link', 'title', 'thumbnail']) {
     if (!newVideo[requiredParam]) {
       return res.status(422)
-        .json({ message: `Expected format: { link: <String>, title: <String> }. You are missing a ${requiredParam}.` })
+        .json({ message: `Expected format: { link: <String>, title: <String>, thumbnail: <String> }. You are missing a ${requiredParam}.` })
     }
   }
 

@@ -345,7 +345,8 @@ describe('API', () => {
         .post('/api/v1/videos')
         .send({
           "title": "Little Wing @ Hermans",
-          "link": "https://www.youtube.com/watch?v=dAPQgkgLNRw"
+          "link": "https://www.youtube.com/watch?v=dAPQgkgLNRw",
+          "thumbnail": "urlthing"
         })
         .end((err, response) => {
           response.should.have.status(201)
@@ -367,7 +368,7 @@ describe('API', () => {
           response.should.be.json
           response.body.should.have.property('message')
           response.body.message.should.be.a('string')
-          response.body.message.should.equal('Expected format: { link: <String>, title: <String> }. You are missing a link.')
+          response.body.message.should.equal('Expected format: { link: <String>, title: <String>, thumbnail: <String> }. You are missing a link.')
           done()
         })
     })

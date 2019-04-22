@@ -46,8 +46,9 @@ const photos = [
 
 const videos = [
   {
-    link: 'https://www.youtube.com/watch?v=dAPQgkgLNRw',
-    title: 'Limestone @ Herman\'s Hideaway'
+    link: 'https://www.youtube.com/embed/dAPQgkgLNRw',
+    title: 'Limestone @ Herman\'s Hideaway',
+    thumbnail: 'http://img.youtube.com/vi/s1rZAwzgfx0/0.jpg'
   }
 ]
 
