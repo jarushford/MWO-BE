@@ -178,7 +178,8 @@ app.get('/api/v1/videos', (request, response) => {
 app.post('/api/v1/videos', validateVideoParams, (request, response) => {
   const newVideo = {
     title: request.body.title,
-    link: request.body.link
+    link: request.body.link,
+    thumbnail: request.body.thumbnail
   }
 
   database('videos').insert(newVideo, 'id')
