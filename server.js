@@ -204,6 +204,29 @@ app.delete('/api/v1/videos/:id', (request, response) => {
     })
 })
 
+app.get('/api/v1/mailing', (request, response) => {
+  database('mailing').select()
+    .then(emails => {
+      response.status(200).json(emails)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
+app.post('api/v1/mailing', (request, response) => {
+  const subscriber = {
+    email: request.body.email
+  }
+
+  database('mailing').insert(subscriber, 'id')
+    .then(subID => {
+      response.status(201).json({ id: subID[0] })
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
 
 app.use((request, response) => {
   response.status(404).send('Page Not Found.')
