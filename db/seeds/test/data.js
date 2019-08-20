@@ -3,7 +3,8 @@ const {
   tour_dates,
   news,
   photos,
-  videos
+  videos,
+  contacts
 } = require('../../../utils/mockData')
 
 const insertUser = (knex, user) => {
@@ -26,12 +27,17 @@ const insertVideo = (knex, video) => {
   return knex('videos').insert(video)
 }
 
+const insertContact = (knex, contact) => {
+  return knex('mailing').insert(contact)
+}
+
 exports.seed = function(knex, Promise) {
   return knex('users').del()
     .then(() => knex('tour_dates').del())
     .then(() => knex('news').del())
     .then(() => knex('photos').del())
     .then(() => knex('videos').del())
+    .then(() => knex('mailing').del())
     .then(() => {
       let promises = []
 
@@ -40,6 +46,7 @@ exports.seed = function(knex, Promise) {
       news.forEach(item => promises.push(insertNews(knex, item)))
       photos.forEach(photo => promises.push(insertPhoto(knex, photo)))
       videos.forEach(video => promises.push(insertVideo(knex, video)))
+      contacts.forEach(contact => promises.push(insertContact(knex, contact)))
 
       return Promise.all(promises)
     })
